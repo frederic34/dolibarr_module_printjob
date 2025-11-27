@@ -1,0 +1,43 @@
+# Translation file
+
+#
+# Generic
+#
+
+# Module label 'ModulePrintJobName'
+ModulePrintJobName = PrintJob
+# Module description 'ModulePrintJobDesc'
+ModulePrintJobDesc = PrintJob description
+
+#
+# Admin page
+#
+PrintJobSetup = PrintJob setup
+Settings = Settings
+PrintJobSetupPage = PrintJob setup page
+NewSection=New section
+PRINTJOB_MYPARAM1 = My param 1
+PRINTJOB_MYPARAM1Tooltip = My param 1 tooltip
+PRINTJOB_MYPARAM2=My param 2
+PRINTJOB_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+PrintJobAbout = About PrintJob
+PrintJobAboutPage = PrintJob about page
+
+#
+# Sample page
+#
+PrintJobArea = Home PrintJob
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description
+TheFileHasBeenAddedToThePrintQueue=The file has been added to the print queue.

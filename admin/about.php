@@ -1,0 +1,88 @@
+<?php
+/* Copyright (C) 2004-2017  Laurent Destailleur  <eldy@users.sourceforge.net>
+ * Copyright (C) 2024-2025  Frédéric France      <frederic.france@free.fr>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file    printjob/admin/about.php
+ * \ingroup printjob
+ * \brief   About page of module PrintJob.
+ */
+
+// Load Dolibarr environment
+include '../config.php';
+
+// Libraries
+require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
+require_once '../lib/printjob.lib.php';
+
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
+// Translations
+$langs->loadLangs(array("errors", "admin", "printjob@printjob"));
+
+// Access control
+if (!$user->admin) {
+	accessforbidden();
+}
+
+// Parameters
+$action = GETPOST('action', 'aZ09');
+$backtopage = GETPOST('backtopage', 'alpha');
+
+
+/*
+ * Actions
+ */
+
+// None
+
+
+/*
+ * View
+ */
+
+$form = new Form($db);
+
+$help_url = '';
+$title = "PrintJobSetup";
+
+llxHeader('', $langs->trans($title), $help_url, '', 0, 0, '', '', '', 'mod-printjob page-admin_about');
+
+// Subheader
+$linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1').'">'.img_picto($langs->trans("BackToModuleList"), 'back', 'class="pictofixedwidth"').'<span class="hideonsmartphone">'.$langs->trans("BackToModuleList").'</span></a>';
+
+print load_fiche_titre($langs->trans($title), $linkback, 'title_setup');
+
+// Configuration header
+$head = printjobAdminPrepareHead();
+print dol_get_fiche_head($head, 'about', $langs->trans($title), 0, 'printjob@printjob');
+
+dol_include_once('/printjob/core/modules/modPrintJob.class.php');
+$tmpmodule = new modPrintJob($db);
+print $tmpmodule->getDescLong();
+
+// Page end
+print dol_get_fiche_end();
+llxFooter();
+$db->close();

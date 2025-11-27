@@ -1,0 +1,47 @@
+# Translation file
+
+#
+# Generic
+#
+
+# Module label 'ModulePrintJobName'
+ModulePrintJobName = PrintJob
+# Module description 'ModulePrintJobDesc'
+ModulePrintJobDesc=Ce module permet d'envoyer à un serveur distant les documents à imprimer via une API REST.
+
+#
+# Admin page
+#
+PrintJobSetup = PrintJob setup
+Settings = Settings
+PrintJobSetupPage = PrintJob setup page
+NewSection=New section
+PRINTJOB_MYPARAM1 = My param 1
+PRINTJOB_MYPARAM1Tooltip = My param 1 tooltip
+PRINTJOB_MYPARAM2=My param 2
+PRINTJOB_MYPARAM2Tooltip=My param 2 tooltip
+
+
+#
+# About page
+#
+About = About
+PrintJobAbout = About PrintJob
+PrintJobAboutPage = PrintJob about page
+
+#
+# Sample page
+#
+PrintJobArea = Home PrintJob
+MyPageName = My page name
+PrintJobDesc=Ce driver permet d'envoyer à un serveur distant les documents à imprimer via une API REST.
+PrintingDriverDescprintjob=Paramètres
+TheFileHasBeenAddedToThePrintQueue=Le fichier a été ajouté à la file d'impression
+
+PRINTJOB_PRINTER_Name=Imprimante
+PRINTJOB_PRINTER_displayName=Nom
+PRINTJOB_PRINTER_Id=ID
+PRINTJOB_PRINTER_OwnerName=Propriétaire de la tâche
+PRINTJOB_PRINTER_State=État
+PRINTJOB_PRINTER_connectionStatus=État de la connexion
+PRINTJOB_PRINTER_Type=Type d'Imprimante
