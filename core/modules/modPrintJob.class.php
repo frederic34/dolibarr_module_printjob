@@ -70,9 +70,11 @@ class modPrintJob extends DolibarrModules
 		$this->descriptionlong = "PrintJobDescription";
 
 		// Author
-		$this->editor_name = 'Net Logic';
-		$this->editor_url = 'https://netlogic.fr';		// Must be an external online web site
-		$this->editor_squarred_logo = '';					// Must be image filename into the module/img directory followed with @modulename. Example: 'myimage.png@printjob'
+		$this->editor_name = 'frederic34';
+		// Must be an external online web site
+		$this->editor_url = '';
+		// Must be image filename into the module/img directory followed with @modulename. Example: 'myimage.png@printjob'
+		$this->editor_squarred_logo = '';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated', 'experimental_deprecated' or a version string like 'x.y.z'
 		$this->version = '1.0';
@@ -109,23 +111,11 @@ class modPrintJob extends DolibarrModules
 			// Set this to 1 if module has its own theme directory (theme)
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
-			'css' => array(
-				//    '/printjob/css/printjob.css.php',
-			),
+			'css' => [],
 			// Set this to relative path of js file if module must load a js on all pages
-			'js' => array(
-				//   '/printjob/js/printjob.js.php',
-			),
+			'js' => [],
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
-			/* BEGIN MODULEBUILDER HOOKSCONTEXTS */
-			'hooks' => array(
-				//   'data' => array(
-				//       'hookcontext1',
-				//       'hookcontext2',
-				//   ),
-				//   'entity' => '0',
-			),
-			/* END MODULEBUILDER HOOKSCONTEXTS */
+			'hooks' => [],
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
 			// Set this to 1 if the module provides a website template into doctemplates/websites/website_template-mytemplate
@@ -191,22 +181,7 @@ class modPrintJob extends DolibarrModules
 
 		// Cronjobs (List of cron jobs entries to add when module is enabled)
 		// unit_frequency must be 60 for minute, 3600 for hour, 86400 for day, 604800 for week
-		$this->cronjobs = array(
-			//  0 => array(
-			//      'label' => 'MyJob label',
-			//      'jobtype' => 'method',
-			//      'class' => '/printjob/class/printjob.class.php',
-			//      'objectname' => 'PrintJob',
-			//      'method' => 'doScheduledJob',
-			//      'parameters' => '',
-			//      'comment' => 'Comment',
-			//      'frequency' => 2,
-			//      'unitfrequency' => 3600,
-			//      'status' => 0,
-			//      'test' => 'isModEnabled("printjob")',
-			//      'priority' => 50,
-			//  ),
-		);
+		$this->cronjobs = [];
 
 		// Permissions provided by this module
 		$this->rights = [];
