@@ -83,7 +83,7 @@ class printing_printjob extends PrintingDriver
 	 */
 	public function __construct($db)
 	{
-		global $conf, $langs;
+		global $langs;
 
 		$this->db = $db;
 		$langs->load('printjob@printjob');
@@ -125,7 +125,7 @@ class printing_printjob extends PrintingDriver
 	 */
 	public function listAvailablePrinters()
 	{
-		global $conf, $langs;
+		global $langs;
 		$error = 0;
 		$langs->load('printing');
 
@@ -260,8 +260,10 @@ class printing_printjob extends PrintingDriver
 		if (empty($printerid)) {
 			return ['status' => 0, 'errorcode' => '', 'errormessage' => 'No provided printer ID'];
 		}
-		//$filepath = str_replace(DOL_DATA_ROOT, '', $filepath);
-		$sql = 'INSERT INTO llx_printjob (printerid, filename, modulepart, date_creation, fk_user_creat, status) VALUES ("' . $this->db->escape($printerid) . '", "' . $this->db->escape($printjobtitle) . '", "' . $this->db->escape($module) . '", "' . $this->db->idate(dol_now()) . '", ' . (int) $user->id . ', 0)';
+		$sql = 'DELETE FROM ' . MAIN_DB_PREFIX . 'printjob WHERE date_creation < "'.$this->db->idate(dol_now() - 3600).'"';
+		$this->db->query($sql);
+
+		$sql = 'INSERT INTO ' . MAIN_DB_PREFIX . 'printjob (printerid, filename, modulepart, date_creation, fk_user_creat, status) VALUES ("' . $this->db->escape($printerid) . '", "' . $this->db->escape($printjobtitle) . '", "' . $this->db->escape($module) . '", "' . $this->db->idate(dol_now()) . '", ' . (int) $user->id . ', 0)';
 		$this->db->query($sql);
 
 		$response = [
