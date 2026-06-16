@@ -313,26 +313,9 @@ class printing_printjob extends PrintingDriver
 		$html .= '<td>' . $langs->trans("Cancel") . '</td>';
 		$html .= '</tr>' . "\n";
 
-		$jobs = $responsedata['jobs'];
-		//$html .= '<pre>'.print_r($jobs['0'],true).'</pre>';
-		if (is_array($jobs)) {
-			foreach ($jobs as $value) {
-				$html .= '<tr class="oddeven">';
-				$html .= '<td>' . $value['id'] . '</td>';
-				$dates = dol_print_date((int) substr($value['createTime'], 0, 10), 'dayhour');
-				$html .= '<td>' . $dates . '</td>';
-				$html .= '<td>' . $value['ownerId'] . '</td>';
-				$html .= '<td>' . $value['printerName'] . '</td>';
-				$html .= '<td>' . $value['title'] . '</td>';
-				$html .= '<td>' . $value['status'] . '</td>';
-				$html .= '<td>&nbsp;</td>';
-				$html .= '</tr>';
-			}
-		} else {
-			$html .= '<tr class="oddeven">';
-			$html .= '<td colspan="7" class="opacitymedium">' . $langs->trans("None") . '</td>';
-			$html .= '</tr>';
-		}
+		$html .= '<tr class="oddeven">';
+		$html .= '<td colspan="7" class="opacitymedium">' . $langs->trans("None") . '</td>';
+		$html .= '</tr>';
 		$html .= '</table>';
 		$html .= '</div>';
 

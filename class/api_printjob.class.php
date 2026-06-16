@@ -186,7 +186,7 @@ class PrintJobApi extends DolibarrApi
 	 */
 	public function put($id, $status)
 	{
-		if (!DolibarrApiAccess::$user->hasRight('printing', 'read')) {
+		if (!DolibarrApiAccess::$user->hasRight('printing', 'write')) {
 			throw new RestException(403);
 		}
 
@@ -237,9 +237,10 @@ class PrintJobApi extends DolibarrApi
 			throw new RestException(404, 'PrintJob not found');
 		}
 
-		if ($this->printjob->delete(DolibarrApiAccess::$user) == 0) {
+		$deleteresult = $this->printjob->delete(DolibarrApiAccess::$user);
+		if ($deleteresult == 0) {
 			throw new RestException(409, 'Error when deleting PrintJob : '.$this->printjob->error);
-		} elseif ($this->printjob->delete(DolibarrApiAccess::$user) < 0) {
+		} elseif ($deleteresult < 0) {
 			throw new RestException(500, 'Error when deleting PrintJob : '.$this->printjob->error);
 		}
 
