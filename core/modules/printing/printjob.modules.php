@@ -113,6 +113,7 @@ class printing_printjob extends PrintingDriver
 		}
 		// do not display submit button
 		$this->conf[] = [
+			'varname' => '',
 			'enabled' => 0,
 			'type' => 'submit'
 		];
