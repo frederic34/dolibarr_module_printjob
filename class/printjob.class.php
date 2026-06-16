@@ -52,7 +52,7 @@ class PrintJob extends CommonObject
 	public $table_element = 'printjob';
 
 	/**
-	 * @var string 		If permission must be checked with hasRight('printjob', 'read') and not hasright('printjob', 'printjob', 'read'), you can uncomment this line
+	 * @var string 		If permission must be checked with hasRight('printjob', 'read') and not hasRight('printjob', 'printjob', 'read'), you can uncomment this line
 	 */
 	//public $element_for_permission = 'printjob';
 
@@ -75,6 +75,7 @@ class PrintJob extends CommonObject
 
 	const STATUS_DRAFT = 0;
 	const STATUS_PRINTED = 1;
+	const STATUS_VALIDATED = 1;
 	const STATUS_CANCELED = 9;
 
 	/**
