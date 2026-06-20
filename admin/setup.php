@@ -93,53 +93,12 @@ $item->defaultFieldValue = 'default value';
 $item->fieldAttr['placeholder'] = 'A placeholder here';
 $item->helpText = 'Tooltip text';
 
-// Setup conf for selection of a simple textarea input but we replace the text of field title
-$item = $formSetup->newItem('PRINTJOB_MYPARAM3');
-$item->nameText = $item->getNameText().' more html text ';
-
-// Setup conf for a selection of a Thirdparty
-$item = $formSetup->newItem('PRINTJOB_MYPARAM4');
-$item->setAsThirdpartyType();
-
-// Setup conf for a selection of a boolean
-$formSetup->newItem('PRINTJOB_MYPARAM5')->setAsYesNo();	 // ->fieldParams['alertifoff'] = 1 or ->fieldParams['alertifon'] = 1;
-
-// Setup conf for a selection of an Email template of type thirdparty
-$formSetup->newItem('PRINTJOB_MYPARAM6')->setAsEmailTemplate('thirdparty');
-
 // Setup conf for a selection of a secured key
 //$formSetup->newItem('PRINTJOB_MYPARAM7')->setAsSecureKey();
 
 // Setup conf for a selection of a Product
 $formSetup->newItem('PRINTJOB_MYPARAM8')->setAsProduct();
 
-// Add a title for a new section
-$formSetup->newItem('NewSection')->setAsTitle();
-
-$TField = array(
-	'test01' => $langs->trans('test01'),
-	'test02' => $langs->trans('test02'),
-	'test03' => $langs->trans('test03'),
-	'test04' => $langs->trans('test04'),
-	'test05' => $langs->trans('test05'),
-	'test06' => $langs->trans('test06'),
-);
-
-// Setup conf for a simple combo list
-$formSetup->newItem('PRINTJOB_MYPARAM9')->setAsSelect($TField);
-
-// Setup conf for a multiselect combo list
-$item = $formSetup->newItem('PRINTJOB_MYPARAM10');
-$item->setAsMultiSelect($TField);
-$item->helpText = $langs->transnoentities('PRINTJOB_MYPARAM10');
-
-// Setup conf for a category selection
-$formSetup->newItem('PRINTJOB_CATEGORY_ID_XXX')->setAsCategory('product');
-
-// Setup conf PRINTJOB_MYPARAM10
-$item = $formSetup->newItem('PRINTJOB_MYPARAM10');
-$item->setAsColor();
-$item->defaultFieldValue = '#FF0000';
 
 // End of definition of parameters
 

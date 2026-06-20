@@ -186,10 +186,10 @@ class PrintJobApi extends DolibarrApi
 	 */
 	public function put($id, $status)
 	{
-		if (!DolibarrApiAccess::$user->hasRight('printing', 'write')) {
+		if (!DolibarrApiAccess::$user->hasRight('printing', 'read')) { // access write doesn't exist in printing module
 			throw new RestException(403);
 		}
-
+		dol_syslog('update printjob id '.$id, LOG_NOTICE);
 		$result = $this->printjob->fetch($id);
 		if (!$result) {
 			throw new RestException(404, 'PrintJob not found');
@@ -225,7 +225,7 @@ class PrintJobApi extends DolibarrApi
 	 */
 	public function delete($id)
 	{
-		if (!DolibarrApiAccess::$user->hasRight('printjob', 'printjob', 'delete')) {
+		if (!DolibarrApiAccess::$user->hasRight('printjob', 'delete')) {
 			throw new RestException(403);
 		}
 		if (!DolibarrApi::_checkAccessToResource('printjob', $id, 'printjob_printjob')) {

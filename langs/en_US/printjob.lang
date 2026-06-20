@@ -10,34 +10,25 @@ ModulePrintJobName = PrintJob
 ModulePrintJobDesc = PrintJob description
 
 #
-# Admin page
+# Admin pages
 #
 PrintJobSetup = PrintJob setup
 Settings = Settings
 PrintJobSetupPage = PrintJob setup page
-NewSection=New section
-PRINTJOB_MYPARAM1 = My param 1
-PRINTJOB_MYPARAM1Tooltip = My param 1 tooltip
-PRINTJOB_MYPARAM2=My param 2
-PRINTJOB_MYPARAM2Tooltip=My param 2 tooltip
-
-
-#
-# About page
-#
 About = About
-PrintJobAbout = About PrintJob
-PrintJobAboutPage = PrintJob about page
 
 #
-# Sample page
+# Module pages
 #
 PrintJobArea = Home PrintJob
-MyPageName = My page name
-
-#
-# Sample widget
-#
-MyWidget = My widget
-MyWidgetDescription = My widget description
+PrintJobDesc=This driver sends documents to a remote print server via a REST API.
+PrintingDriverDescprintjob=Settings
 TheFileHasBeenAddedToThePrintQueue=The file has been added to the print queue.
+
+PRINTJOB_PRINTER_Name=Printer
+PRINTJOB_PRINTER_displayName=Name
+PRINTJOB_PRINTER_Id=ID
+PRINTJOB_PRINTER_OwnerName=Job owner
+PRINTJOB_PRINTER_State=State
+PRINTJOB_PRINTER_connectionStatus=Connection status
+PRINTJOB_PRINTER_Type=Printer type

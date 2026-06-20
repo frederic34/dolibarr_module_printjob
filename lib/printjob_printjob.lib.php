@@ -42,7 +42,7 @@ function printjobPrepareHead($object)
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = dolBuildUrl(dol_buildpath("/printjob/printjob_card.php", 1), ['id' => $object->id]);
+	$head[$h][0] = dolBuildUrl(dol_buildpath("/printjob/printjob_list.php", 1), ['search_rowid' => $object->id]);
 	$head[$h][1] = $langs->trans("PrintJob");
 	$head[$h][2] = 'card';
 	$h++;

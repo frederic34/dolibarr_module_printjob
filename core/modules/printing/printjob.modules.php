@@ -223,8 +223,8 @@ class printing_printjob extends PrintingDriver
 			if ($obj) {
 				$printer_id = $obj->printer_id;
 			} else {
-				if (!empty($conf->global->PRINTING_PRINTJOB_DEFAULT)) {
-					$printer_id = $conf->global->PRINTING_PRINTJOB_DEFAULT;
+				if (getDolGlobalString('PRINTING_PRINTJOB_DEFAULT')) {
+					$printer_id = getDolGlobalString('PRINTING_PRINTJOB_DEFAULT');
 				} else {
 					$this->errors[] = 'NoDefaultPrinterDefined';
 					$error++;

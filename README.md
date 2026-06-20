@@ -99,42 +99,9 @@ Basculer en mode kanban avec l'icône grille en haut à droite :
 
 ---
 
-### Créer un job manuellement
+### Création des jobs
 
-Cliquer sur **+** dans la liste ou accéder à `/custom/printjob/printjob_card.php?action=create` :
-
-![Formulaire de création d'un PrintJob](docs/screenshots/07_printjob_create.png)
-
-| Champ | Obligatoire | Description |
-|-------|-------------|-------------|
-| **PrinterId** | Oui | Identifiant de l'imprimante (ex : `default`, UUID cloud) |
-| **Filename** | Non | Nom/chemin du fichier à imprimer |
-| **ModulePart** | Non | Module source du document (`facture`, `commande`, `propal`…) |
-| **Status** | Oui | État initial (généralement `Brouillon`) |
-
-> En pratique, les jobs sont créés automatiquement par le driver lorsque l'utilisateur clique sur le bouton **Imprimer** dans un module Dolibarr (factures, commandes, etc.).
-
----
-
-### Fiche détail d'un job
-
-![Fiche d'un PrintJob](docs/screenshots/08_printjob_card_view.png)
-
-La fiche affiche :
-- Le **PrinterId**, **Filename** et **ModulePart**
-- Le **statut** courant (badge coloré)
-- Les objets liés (*Related Objects*)
-- Les boutons d'action : **Send Email**, **Back to Draft**, **Modify**, **Clone**, **Delete**
-
----
-
-### Modifier un job
-
-Cliquer sur **Modify** depuis la fiche :
-
-![Formulaire d'édition d'un PrintJob](docs/screenshots/09_printjob_card_edit.png)
-
-Tous les champs sont modifiables. Le statut peut être changé manuellement via le sélecteur.
+Les jobs sont créés **automatiquement** par le driver d'impression lorsque l'utilisateur clique sur le bouton **Imprimer** dans un module Dolibarr (factures, commandes, devis, etc.). Il n'existe pas de formulaire de création manuelle.
 
 ---
 
@@ -236,7 +203,6 @@ printjob/
 │   ├── printjob.class.php                 # Objet métier PrintJob
 │   └── api_printjob.class.php             # API REST
 ├── printjob_list.php                      # Page liste
-├── printjob_card.php                      # Page fiche
 ├── sql/
 │   └── llx_printjob.sql                   # Schéma de la table
 └── langs/
