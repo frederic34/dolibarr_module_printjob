@@ -32,3 +32,6 @@ PRINTJOB_PRINTER_OwnerName=Propriétaire de la tâche
 PRINTJOB_PRINTER_State=État
 PRINTJOB_PRINTER_connectionStatus=État de la connexion
 PRINTJOB_PRINTER_Type=Type d'imprimante
+PRINTJOB_PRINTER_Accepting=Accepte les travaux
+PRINTJOB_PRINTER_DeviceUri=URI
+NoPrinterAvailable=Aucune imprimante disponible. Envoyez la liste via PUT /api/index.php/printjobs/printers.

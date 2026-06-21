@@ -32,3 +32,6 @@ PRINTJOB_PRINTER_OwnerName=Job owner
 PRINTJOB_PRINTER_State=State
 PRINTJOB_PRINTER_connectionStatus=Connection status
 PRINTJOB_PRINTER_Type=Printer type
+PRINTJOB_PRINTER_Accepting=Accepting jobs
+PRINTJOB_PRINTER_DeviceUri=URI
+NoPrinterAvailable=No printer available. Send the list via PUT /api/index.php/printjobs/printers.

@@ -120,9 +120,9 @@ class printing_printjob extends PrintingDriver
 	}
 
 	/**
-	 *  Return list of available printers
+	 *  Return list of available printers (HTML rows for the admin table)
 	 *
-	 *  @return  int                     0 if OK, >0 if KO
+	 *  @return  int     0 if OK, >0 if KO
 	 */
 	public function listAvailablePrinters()
 	{
@@ -130,66 +130,84 @@ class printing_printjob extends PrintingDriver
 		$error = 0;
 		$langs->load('printing');
 
-		$html = '<tr class="liste_titre">';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_Name') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_displayName') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_Id') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_OwnerName') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_State') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_connectionStatus') . '</td>';
-		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_Type') . '</td>';
-		$html .= '<td class="center">' . $langs->trans("Select") . '</td>';
+		$html  = '<tr class="liste_titre">';
+		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_Name')       . '</td>';
+		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_State')       . '</td>';
+		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_Accepting')   . '</td>';
+		$html .= '<td>' . $langs->trans('PRINTJOB_PRINTER_DeviceUri')   . '</td>';
+		$html .= '<td class="center">' . $langs->trans("Select")        . '</td>';
 		$html .= "</tr>\n";
+
 		$list = $this->getlistAvailablePrinters();
 
-		foreach ($list['available'] as $printer_det) {
+		if (empty($list['available'])) {
+			$html .= '<tr class="oddeven"><td colspan="5" class="opacitymedium">' . $langs->trans('NoPrinterAvailable') . '</td></tr>';
+		}
+
+		foreach ($list['available'] as $p) {
 			$html .= '<tr class="oddeven">';
-			$html .= '<td>' . $printer_det['name'] . '</td>';
-			$html .= '<td>' . $printer_det['displayName'] . '</td>';
-			$html .= '<td>' . $printer_det['id'] . '</td>'; // id to identify printer to use
-			$html .= '<td>' . $printer_det['ownerName'] . '</td>';
-			$html .= '<td>' . $printer_det['status'] . '</td>';
-			$html .= '<td>' . $langs->trans('STATE_' . $printer_det['connectionStatus']) . '</td>';
-			$html .= '<td>' . $langs->trans('TYPE_' . $printer_det['type']) . '</td>';
-			// Defaut
+			$html .= '<td>' . dol_escape_htmltag($p['name'])      . '</td>';
+			$html .= '<td>' . dol_escape_htmltag($p['status'])     . '</td>';
+			$html .= '<td>' . ($p['isAccepting'] ? img_picto($langs->trans("Yes"), 'tick') : '') . '</td>';
+			$html .= '<td>' . dol_escape_htmltag($p['deviceUri'])  . '</td>';
 			$html .= '<td class="center">';
-			if (getDolGlobalString('PRINTING_PRINTJOB_DEFAULT') == $printer_det['id']) {
+			if (getDolGlobalString('PRINTING_PRINTJOB_DEFAULT') === $p['id']) {
 				$html .= img_picto($langs->trans("Default"), 'on');
 			} else {
-				$html .= '<a href="' . $_SERVER["PHP_SELF"] . '?action=setvalue&token=' . newToken() . '&mode=test&varname=PRINTING_PRINTJOB_DEFAULT&driver=printjob&value=' . urlencode($printer_det['id']) . '" alt="' . $langs->trans("Default") . '">';
+				$html .= '<a href="' . $_SERVER["PHP_SELF"] . '?action=setvalue&token=' . newToken()
+					. '&mode=test&varname=PRINTING_PRINTJOB_DEFAULT&driver=printjob&value=' . urlencode($p['id'])
+					. '" alt="' . $langs->trans("Default") . '">';
 				$html .= img_picto($langs->trans("Disabled"), 'off');
 				$html .= '</a>';
 			}
 			$html .= '</td>';
 			$html .= '</tr>' . "\n";
 		}
-		$this->resprint = $html;
 
+		$this->resprint = $html;
 		return $error;
 	}
 
-
 	/**
-	 *  Return list of available printers
+	 * Return list of available printers from the local DB (populated by the agent via PUT /printers).
 	 *
-	 *  @return array      list of printers
+	 * Each entry has: id, name, status, isAccepting, deviceUri, options (decoded array).
+	 *
+	 * @return array{available: array<string, array{id:string,name:string,status:string,isAccepting:bool,deviceUri:string,options:array|null}>}
 	 */
 	public function getlistAvailablePrinters()
 	{
-		global $user;
-		$ret = [];
+		global $conf;
 
-		$ret['available'] = [
-			'default' => [
-				'id' => 'default',
-				'name' => 'default',
-				'displayName' => 'default',
-				'ownerName' => 'dolibarr',
-				'status' => 'online',
-				'connectionStatus' => 'printing',
-				'type' => 'color',
-			],
-		];
+		$ret = ['available' => []];
+
+		$sql  = "SELECT rowid, name, status, is_accepting, device_uri, options";
+		$sql .= " FROM " . MAIN_DB_PREFIX . "printjob_printer";
+		$sql .= " WHERE entity = " . (int) $conf->entity;
+		$sql .= " ORDER BY name ASC";
+
+		$resql = $this->db->query($sql);
+		if (!$resql) {
+			$this->error = $this->db->lasterror();
+			return $ret;
+		}
+
+		while ($obj = $this->db->fetch_object($resql)) {
+			$name = $obj->name;
+			$ret['available'][$name] = [
+				'id'          => $name,
+				'name'        => $name,
+				'status'      => $obj->status,
+				'isAccepting' => (bool) $obj->is_accepting,
+				'deviceUri'   => (string) $obj->device_uri,
+				'options'     => $obj->options ? json_decode($obj->options, true) : null,
+				// Legacy fields kept for any caller that still reads them
+				'displayName'      => $name,
+				'ownerName'        => (string) $obj->device_uri,
+				'connectionStatus' => ($obj->status === 'idle' || $obj->status === 'processing') ? 'online' : 'offline',
+				'type'             => 'color',
+			];
+		}
 
 		return $ret;
 	}
