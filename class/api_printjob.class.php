@@ -252,6 +252,104 @@ class PrintJobApi extends DolibarrApi
 		);
 	}
 
+	/**
+	 * Register or update the list of available printers reported by a local agent.
+	 *
+	 * Each element of the array represents one printer with its current status and PPD options.
+	 * Existing printers (matched by name + entity) are updated in place; new ones are inserted.
+	 * Printers absent from the payload are left untouched (use DELETE to remove stale entries).
+	 *
+	 * Example payload:
+	 * <pre>
+	 * [
+	 *   {
+	 *     "name": "AL-C2800",
+	 *     "status": "idle",
+	 *     "isAccepting": true,
+	 *     "deviceUri": "socket://192.168.1.10:9100",
+	 *     "options": {
+	 *       "PageSize":   { "values": ["A4","A3","Letter"], "default": "A4" },
+	 *       "ColorModel": { "values": ["CMYK","Gray"],     "default": "CMYK" },
+	 *       "Duplex":     { "values": ["None","DuplexNoTumble","DuplexTumble"], "default": "None" }
+	 *     }
+	 *   }
+	 * ]
+	 * </pre>
+	 *
+	 * @param  array $printers  Array of printer objects (from JSON body)
+	 * @return array            {"updated": N, "total": N}
+	 *
+	 * @url    PUT printers
+	 *
+	 * @throws RestException 400 Invalid or missing JSON array
+	 * @throws RestException 403 Not allowed
+	 * @throws RestException 500 Database error
+	 */
+	public function putPrinters($printers = null)
+	{
+		global $conf;
+
+		if (!DolibarrApiAccess::$user->hasRight('printing', 'read')) {
+			throw new RestException(403);
+		}
+
+		// Restler may not bind top-level JSON arrays to parameters — fall back to raw input
+		if (!is_array($printers)) {
+			$raw      = file_get_contents('php://input');
+			$printers = json_decode($raw, true);
+		}
+
+		if (!is_array($printers) || empty($printers)) {
+			throw new RestException(400, 'Expected a non-empty JSON array of printer objects');
+		}
+
+		$entity  = (int) $conf->entity;
+		$updated = 0;
+		$errors  = array();
+
+		foreach ($printers as $p) {
+			$name      = isset($p['name'])       ? trim((string) $p['name'])      : '';
+			$status    = isset($p['status'])     ? trim((string) $p['status'])    : 'unknown';
+			$accepting = empty($p['isAccepting']) ? 0 : 1;
+			$deviceUri = isset($p['deviceUri'])  ? trim((string) $p['deviceUri']) : '';
+			$options   = isset($p['options'])    ? $p['options']                  : null;
+
+			if ($name === '') {
+				continue;
+			}
+
+			$sql = "INSERT INTO ".$this->db->prefix()."printjob_printer
+				(entity, name, status, is_accepting, device_uri, options, date_creation)
+				VALUES (
+					".$entity.",
+					'".$this->db->escape($name)."',
+					'".$this->db->escape($status)."',
+					".$accepting.",
+					'".$this->db->escape($deviceUri)."',
+					".($options !== null ? "'".$this->db->escape(json_encode($options))."'" : "NULL").",
+					'".$this->db->idate(dol_now())."'
+				)
+				ON DUPLICATE KEY UPDATE
+					status       = '".$this->db->escape($status)."',
+					is_accepting = ".$accepting.",
+					device_uri   = '".$this->db->escape($deviceUri)."',
+					options      = ".($options !== null ? "'".$this->db->escape(json_encode($options))."'" : "NULL");
+
+			$res = $this->db->query($sql);
+			if ($res) {
+				$updated++;
+			} else {
+				$errors[] = $name.': '.$this->db->lasterror();
+			}
+		}
+
+		if (!empty($errors)) {
+			throw new RestException(500, implode('; ', $errors));
+		}
+
+		return array('updated' => $updated, 'total' => count($printers));
+	}
+
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.PublicUnderscore
 	/**
 	 * Clean sensitive object data fields
